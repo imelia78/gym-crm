@@ -1,29 +1,58 @@
 package org.example.project.Model;
 
 
+import jakarta.persistence.*;
 import org.example.project.Credentials.CredentialsGenerator;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
+@Entity
+@Table(name = "trainers")
 public class Trainer extends User {
-    private Long userId;
+
+    @Column(nullable = false)
     private String specialization;
 
     public Trainer() {
         super();
     }
 
+    @ManyToMany
+    @JoinTable(
+            name = "trainer_trainee",
+            joinColumns = @JoinColumn(name = "trainer_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainee_id")
+    )
+    private List<Trainee> trainees = new ArrayList<>();
 
-    public Trainer(CredentialsGenerator credentialsGenerator, String firstName, String lastName, boolean isActive, Long userId, String specialization) {
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Training> trainings = new ArrayList<>();
+
+
+    public Trainer(CredentialsGenerator credentialsGenerator, String firstName, String lastName, boolean isActive, String specialization) {
         super(credentialsGenerator, firstName, lastName, isActive);
-        this.userId = userId;
+
         this.specialization = specialization;
     }
 
-    public Long getUserId() {
-        return userId;
+    public List<Trainee> getTrainees() {
+        return trainees;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setTrainees(List<Trainee> trainees) {
+        this.trainees = trainees;
+    }
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
     }
 
     public String getSpecialization() {
@@ -34,8 +63,4 @@ public class Trainer extends User {
         this.specialization = specialization;
     }
 
-    @Override
-    public String toString() {
-        return  super.toString() + "\nuserId: " + userId + "\nspecialization: " + specialization;
-    }
 }

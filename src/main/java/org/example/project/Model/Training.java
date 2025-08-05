@@ -1,25 +1,50 @@
 package org.example.project.Model;
 
+import jakarta.persistence.*;
+
 import java.time.Duration;
 import java.time.LocalDate;
 
+
+
+@Entity
+@Table(name = "trainings")
 public class Training {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long traineeId;
-    private Long trainerId;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "trainee_id")
+    private Trainee trainee;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "trainer_id")
+    private Trainer trainer;
+
+    /*private Long traineeId;
+    private Long trainerId;*/
+    @Column(nullable = false)
     private String trainingName;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "training_type_id")
     private TrainingType trainingType;
+
+    @Column(nullable = false)
     private LocalDate trainingDate;
-    private Duration trainingDuration;
+
+    @Column(nullable = false)
+    private Integer trainingDuration;
 
     public Training() {
 
     }
 
-    public Training(Long id, Long traineeId, Long trainerId, String trainingName, TrainingType trainingType, LocalDate trainingDate, Duration trainingDuration) {
-        this.id = id;
-        this.traineeId = traineeId;
-        this.trainerId = trainerId;
+    public Training(Trainee trainee, Trainer trainer, String trainingName, TrainingType trainingType, LocalDate trainingDate, int trainingDuration) {
+        this.trainee = trainee;
+        this.trainer = trainer;
         this.trainingName = trainingName;
         this.trainingType = trainingType;
         this.trainingDate = trainingDate;
@@ -34,20 +59,20 @@ public class Training {
         this.id = id;
     }
 
-    public Long getTraineeId() {
-        return traineeId;
+    public Trainee getTrainee() {
+        return trainee;
     }
 
-    public void setTraineeId(Long traineeId) {
-        this.traineeId = traineeId;
+    public void setTrainee(Trainee trainee) {
+        this.trainee = trainee;
     }
 
-    public Long getTrainerId() {
-        return trainerId;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setTrainerId(Long trainerId) {
-        this.trainerId = trainerId;
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public String getTrainingName() {
@@ -74,11 +99,11 @@ public class Training {
         this.trainingDate = trainingDate;
     }
 
-    public Duration getTrainingDuration() {
+    public Integer getTrainingDuration() {
         return trainingDuration;
     }
 
-    public void setTrainingDuration(Duration trainingDuration) {
+    public void setTrainingDuration(int trainingDuration) {
         this.trainingDuration = trainingDuration;
     }
 }

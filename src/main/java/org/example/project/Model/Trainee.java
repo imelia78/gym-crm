@@ -1,24 +1,61 @@
 package org.example.project.Model;
 
+import jakarta.persistence.*;
 import org.example.project.Credentials.CredentialsGenerator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+@Entity
+@Table(name = "trainees")
 public class Trainee extends User {
-   private LocalDate dateOfBirth;
-   private String address;
-   private Long userId;
 
-   public Trainee() {
-       super();
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
 
-   }
+    @Column(nullable = false)
+    private String address;
 
-    public Trainee(CredentialsGenerator credentialsGenerator, String firstName, String lastName, boolean isActive, LocalDate dateOfBirth, String address, Long userId) {
+
+    @ManyToMany(mappedBy = "trainees")
+    private List<Trainer> trainers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL, orphanRemoval = true)
+    // orphanRemoval -- удалит дочерние обьекты без родителя!
+    private List<Training> trainings = new ArrayList<>();
+
+
+    public Trainee() {
+        super();
+
+    }
+
+
+    public Trainee(CredentialsGenerator credentialsGenerator, String firstName, String lastName,
+                   boolean isActive, LocalDate dateOfBirth, String address) {
         super(credentialsGenerator, firstName, lastName, isActive);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
-        this.userId = userId;
+
+    }
+
+    public List<Trainer> getTrainers() {
+        return trainers;
+    }
+
+    public void setTrainers(List<Trainer> trainers) {
+        this.trainers = trainers;
+    }
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
     }
 
     public LocalDate getDateOfBirth() {
@@ -37,11 +74,5 @@ public class Trainee extends User {
         this.address = address;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

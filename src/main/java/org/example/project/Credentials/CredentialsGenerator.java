@@ -1,59 +1,44 @@
 package org.example.project.Credentials;
 
 
-import org.example.project.DAO.GenericDAO;
-import org.example.project.DAO.TraineeDAOImpl;
-import org.example.project.DAO.TrainerDAO;
-import org.example.project.DAO.TrainerDAOImpl;
-import org.example.project.Model.Trainer;
+import org.example.project.Service.TraineeService;
+import org.example.project.Service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+
 @Component
 public class CredentialsGenerator {
 
+    private final TraineeService traineeService;
+    private final TrainerService trainerService;
 
-    private  TraineeDAOImpl traineeDAO;
-
-    private TrainerDAOImpl trainerDAO;
-
-
-    @Autowired
-    private void setTraineeDaoImpl(TraineeDAOImpl traineeDAO) {
-        this.traineeDAO = traineeDAO;
+    public CredentialsGenerator(TraineeService traineeService, TrainerService trainerService) {
+        this.traineeService = traineeService;
+        this.trainerService = trainerService;
     }
 
-    @Autowired
-    private void setTrainerDaoImpl(TrainerDAOImpl traineeDAO) {
-        this.trainerDAO = traineeDAO;
-    }
-
-    public TraineeDAOImpl getTraineeDAO() {
-        return traineeDAO;
-    }
-
-    public TrainerDAOImpl getTrainerDAO() {
-        return trainerDAO;
-    }
-
-    public  String generateUsername(String firstName, String lastName) {
-
-        String baseUsername = firstName.trim() + "." + lastName.trim();
+    public String generateUsername(String firstName, String lastName) {
+        String baseUsername = firstName.trim().toLowerCase() + "." + lastName.trim().toLowerCase();
         String username = baseUsername;
         int postfix = 1;
-        while (traineeDAO.findAll().stream().anyMatch(trainer -> trainer.getUsername().equals(baseUsername)) ||
-                trainerDAO.findAll().stream().anyMatch(trainer -> trainer.getUsername().equals(baseUsername))) {
+
+        while (usernameExists(username)) {
             username = baseUsername + postfix;
             postfix++;
         }
+
         return username;
     }
 
+    private boolean usernameExists(String username) {
+        return traineeService.findAll().stream().anyMatch(t -> username.equals(t.getUsername())) ||
+                trainerService.findAll().stream().anyMatch(t -> username.equals(t.getUsername()));
+    }
 
     public String generatePassword() {
         return UUID.randomUUID().toString().substring(0, 10);
     }
-
 }

@@ -1,22 +1,39 @@
 package org.example.project.Model;
 
 
+import jakarta.persistence.*;
 import org.example.project.Credentials.CredentialsGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private boolean isActive;
 
-
+// Сменить параметры конструктора!
     public User(CredentialsGenerator credentialsGenerator, String firstName, String lastName, boolean isActive) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,18 +46,6 @@ public abstract class User {
 
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return isActive == user.isActive && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, username, password, isActive);
-    }
 
     public String getFirstName() {
         return firstName;
@@ -76,11 +81,11 @@ public abstract class User {
         this.password = password;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(boolean active) {
         isActive = active;
 
     }
