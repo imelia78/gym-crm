@@ -3,10 +3,12 @@ package org.example.project.Service;
 import org.example.project.Model.Trainee;
 import org.example.project.Model.Trainer;
 import org.example.project.Model.Training;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public interface TraineeService {
 
 
