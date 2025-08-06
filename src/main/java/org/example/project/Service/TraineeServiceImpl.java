@@ -1,6 +1,7 @@
 package org.example.project.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.example.project.Credentials.CredentialsGenerator;
 import org.example.project.Model.Trainee;
 import org.example.project.Model.Trainer;
@@ -10,11 +11,14 @@ import org.example.project.Repository.TrainerRepository;
 import org.example.project.Repository.TrainingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class TraineeServiceImpl implements TraineeService {
     private static final Logger logger = LoggerFactory.getLogger(TraineeServiceImpl.class);
 

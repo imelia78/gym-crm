@@ -1,6 +1,8 @@
 package org.example.project.Credentials;
 
 
+import org.example.project.Repository.TraineeRepository;
+import org.example.project.Repository.TrainerRepository;
 import org.example.project.Service.TraineeService;
 import org.example.project.Service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,14 @@ import java.util.UUID;
 @Component
 public class CredentialsGenerator {
 
-    private final TraineeService traineeService;
-    private final TrainerService trainerService;
 
-    public CredentialsGenerator(TraineeService traineeService, TrainerService trainerService) {
-        this.traineeService = traineeService;
-        this.trainerService = trainerService;
+    private final TraineeRepository traineeRepository;
+    private final TrainerRepository trainerRepository;
+
+
+    public CredentialsGenerator(TraineeRepository traineeRepository, TrainerRepository trainerRepository) {
+        this.traineeRepository = traineeRepository;
+        this.trainerRepository = trainerRepository;
     }
 
     public String generateUsername(String firstName, String lastName) {
@@ -34,8 +38,8 @@ public class CredentialsGenerator {
     }
 
     private boolean usernameExists(String username) {
-        return traineeService.findAll().stream().anyMatch(t -> username.equals(t.getUsername())) ||
-                trainerService.findAll().stream().anyMatch(t -> username.equals(t.getUsername()));
+        return  traineeRepository.findAll().stream().anyMatch(t -> username.equals(t.getUsername())) ||
+                trainerRepository.findAll().stream().anyMatch(t -> username.equals(t.getUsername()));
     }
 
     public String generatePassword() {

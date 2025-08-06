@@ -28,7 +28,7 @@ public class HibernateConfig {
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUrl("jdbc:postgresql://localhost:5432/gymDB");
         ds.setUsername("postgres");
-        ds.setPassword(""); // замени на свой пароль
+        ds.setPassword("1512");
         return ds;
     }
 
@@ -36,11 +36,11 @@ public class HibernateConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
-        emf.setPackagesToScan("org.example.project.Model"); // замени на свой пакет с сущностями
+        emf.setPackagesToScan("org.example.project.Model");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties props = new Properties();
-        props.setProperty("hibernate.hbm2ddl.auto", "update"); // или "create-drop"
+        props.setProperty("hibernate.hbm2ddl.auto", "update");
         props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         props.setProperty("hibernate.show_sql", "true");
 
