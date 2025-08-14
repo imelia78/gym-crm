@@ -1,13 +1,11 @@
-package org.example.project.Model;
+package org.example.project.model;
 
 
 import jakarta.persistence.*;
-import org.example.project.Credentials.CredentialsGenerator;
+import org.example.project.credentials.CredentialsGenerator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity

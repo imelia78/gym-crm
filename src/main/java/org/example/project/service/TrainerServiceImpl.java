@@ -1,20 +1,16 @@
-package org.example.project.Service;
+package org.example.project.service;
 
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.example.project.Credentials.CredentialsGenerator;
-import org.example.project.Model.Trainee;
-import org.example.project.Model.Trainer;
-import org.example.project.Repository.TrainerRepository;
+import org.example.project.credentials.CredentialsGenerator;
+import org.example.project.model.Trainer;
+import org.example.project.repository.TrainerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.parsers.SAXParser;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional

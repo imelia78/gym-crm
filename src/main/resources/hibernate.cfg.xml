@@ -23,10 +23,10 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Annotated classes -->
-        <mapping class="org.example.project.Model.Trainee"/>
-        <mapping class="org.example.project.Model.Trainer"/>
-        <mapping class="org.example.project.Model.Training"/>
-        <mapping class="org.example.project.Model.TrainingType"/>
+        <mapping class="org.example.project.model.Trainee"/>
+        <mapping class="org.example.project.model.Trainer"/>
+        <mapping class="org.example.project.model.Training"/>
+        <mapping class="org.example.project.model.TrainingType"/>
     </session-factory>
 </hibernate-configuration>
 

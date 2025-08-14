@@ -1,7 +1,6 @@
-package org.example.project.Service;
+package org.example.project.service;
 
-import org.example.project.Model.Trainee;
-import org.example.project.Model.Trainer;
+import org.example.project.model.Trainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,8 +1,8 @@
-package org.example.project.Service;
+package org.example.project.service;
 
-import org.example.project.Model.Trainee;
-import org.example.project.Model.Trainer;
-import org.example.project.Model.Training;
+import org.example.project.model.Trainee;
+import org.example.project.model.Trainer;
+import org.example.project.model.Training;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import java.util.List;
 public interface TraineeService {
 
 
-    Trainee save(Trainee trainee);                          // Создание профиля
+    Trainee createTrainee(Trainee trainee);                          // Создание профиля
 
     Trainee findById(Long id);                              // Получение по ID
 
@@ -34,13 +34,7 @@ public interface TraineeService {
 
     void deleteByUsername(String username);                 // Жёсткое удаление
 
-    List<Training> getTrainingsByCriteria(
-            String username,
-            LocalDate fromDate,
-            LocalDate toDate,
-            String trainerName,
-            String trainingTypeName
-    );
+
 
     List<Trainer> getNotAssignedTrainers(String traineeUsername); // Тренеры, не назначенные на ученика
 

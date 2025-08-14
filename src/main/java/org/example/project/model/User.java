@@ -1,12 +1,8 @@
-package org.example.project.Model;
+package org.example.project.model;
 
 
 import jakarta.persistence.*;
-import org.example.project.Credentials.CredentialsGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import org.example.project.credentials.CredentialsGenerator;
 
 
 @Entity
@@ -102,4 +98,11 @@ public abstract class User {
                 '}';
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
 }

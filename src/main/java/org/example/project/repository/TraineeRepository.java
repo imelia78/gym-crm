@@ -1,6 +1,6 @@
-package org.example.project.Repository;
+package org.example.project.repository;
 
-import org.example.project.Model.Trainee;
+import org.example.project.model.Trainee;
 
 import java.util.Optional;
 

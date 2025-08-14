@@ -1,7 +1,7 @@
-package org.example.project.Repository;
+package org.example.project.repository;
 
 import jakarta.transaction.Transactional;
-import org.example.project.Model.TrainingType;
+import org.example.project.model.TrainingType;
 import org.springframework.stereotype.Repository;
 
 @Repository

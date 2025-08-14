@@ -1,11 +1,8 @@
-package org.example.project.Credentials;
+package org.example.project.credentials;
 
 
-import org.example.project.Repository.TraineeRepository;
-import org.example.project.Repository.TrainerRepository;
-import org.example.project.Service.TraineeService;
-import org.example.project.Service.TrainerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.project.repository.TraineeRepository;
+import org.example.project.repository.TrainerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

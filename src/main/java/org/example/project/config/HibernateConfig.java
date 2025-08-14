@@ -1,4 +1,4 @@
-package org.example.project.Config;
+package org.example.project.config;
 
 
 import jakarta.persistence.EntityManagerFactory;

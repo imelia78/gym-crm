@@ -8,10 +8,10 @@
     <persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
 
         <!-- Только Entity-классы -->
-        <class>org.example.project.Model.Trainee</class>
-        <class>org.example.project.Model.Trainer</class>
-        <class>org.example.project.Model.Training</class>
-        <class>org.example.project.Model.TrainingType</class>
+        <class>org.example.project.model.Trainee</class>
+        <class>org.example.project.model.Trainer</class>
+        <class>org.example.project.model.Training</class>
+        <class>org.example.project.model.TrainingType</class>
 
         <!-- Отключаем автосканирование -->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>

@@ -1,14 +1,14 @@
-package org.example.project.Service;
+package org.example.project.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.example.project.Credentials.CredentialsGenerator;
-import org.example.project.Model.Trainee;
-import org.example.project.Model.Trainer;
-import org.example.project.Model.Training;
-import org.example.project.Repository.TraineeRepository;
-import org.example.project.Repository.TrainerRepository;
-import org.example.project.Repository.TrainingRepository;
+import org.example.project.credentials.CredentialsGenerator;
+import org.example.project.model.Trainee;
+import org.example.project.model.Trainer;
+import org.example.project.model.Training;
+import org.example.project.repository.TraineeRepository;
+import org.example.project.repository.TrainerRepository;
+import org.example.project.repository.TrainingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,23 +24,21 @@ public class TraineeServiceImpl implements TraineeService {
 
     private final TraineeRepository traineeRepository;
     private final TrainerRepository trainerRepository;
-    private final TrainingRepository trainingRepository;
     private final CredentialsGenerator credentialsGenerator;
 
     public TraineeServiceImpl(
             TraineeRepository traineeRepository,
             TrainerRepository trainerRepository,
-            TrainingRepository trainingRepository,
             CredentialsGenerator credentialsGenerator
     ) {
         this.traineeRepository = traineeRepository;
         this.trainerRepository = trainerRepository;
-        this.trainingRepository = trainingRepository;
+
         this.credentialsGenerator = credentialsGenerator;
     }
 
     @Override
-    public Trainee save(Trainee trainee) {
+    public Trainee createTrainee(Trainee trainee) {
         trainee.setUsername(credentialsGenerator.generateUsername(trainee.getFirstName(), trainee.getLastName()));
         trainee.setPassword(credentialsGenerator.generatePassword());
         trainee.setIsActive(true);
@@ -52,7 +50,7 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee findById(Long id) {
         Optional<Trainee> trainee = traineeRepository.findById(id);
-        return trainee.orElseThrow( () -> new EntityNotFoundException("Trainee not found by id: " + id));
+        return trainee.orElseThrow(() -> new EntityNotFoundException("Trainee not found by id: " + id));
     }
 
     @Override
@@ -62,13 +60,26 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee update(Trainee trainee) {
-        return traineeRepository.update(trainee);
+        logger.info("Updating trainee with ID: {}", trainee.getId());
+        Trainee existing = traineeRepository.findById(trainee.getId())
+                .orElseThrow(() -> {
+                    logger.error("Trainee with ID {} not found for update", trainee.getId());
+                    return new EntityNotFoundException("Trainee not found with ID " + trainee.getId());
+                });
+        existing.setFirstName(trainee.getFirstName());
+        existing.setLastName(trainee.getLastName());
+        existing.setDateOfBirth(trainee.getDateOfBirth());
+        existing.setAddress(trainee.getAddress());
+        existing.setIsActive(trainee.getIsActive());
+        existing.setTrainings(trainee.getTrainings());
+        existing.setTrainers(trainee.getTrainers());
+        return traineeRepository.update(existing);
     }
 
     @Override
     public void delete(Long id) {
         Optional<Trainee> trainee = traineeRepository.findById(id);
-        traineeRepository.delete(trainee.orElseThrow( () -> new EntityNotFoundException("Trainee not found by id: " + id)));
+        traineeRepository.delete(trainee.orElseThrow(() -> new EntityNotFoundException("Trainee not found by id: " + id)));
         logger.info("Deleted trainee by id: {}", id);
     }
 
@@ -116,12 +127,6 @@ public class TraineeServiceImpl implements TraineeService {
         logger.info("Hard deleted trainee by username: {}", username);
     }
 
-    @Override
-    public List<Training> getTrainingsByCriteria(String username, LocalDate fromDate, LocalDate toDate, String trainerName, String trainingTypeName) {
-        return trainingRepository.findByTraineeUsernameAndCriteria(
-                username, fromDate, toDate, trainerName, trainingTypeName
-        );
-    }
 
     @Override
     public List<Trainer> getNotAssignedTrainers(String traineeUsername) {

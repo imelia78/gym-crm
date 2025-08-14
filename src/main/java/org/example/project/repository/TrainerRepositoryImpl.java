@@ -1,8 +1,8 @@
-package org.example.project.Repository;
+package org.example.project.repository;
 
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import org.example.project.Model.Trainer;
+import org.example.project.model.Trainer;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
