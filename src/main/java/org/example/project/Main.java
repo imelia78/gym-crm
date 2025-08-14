@@ -62,7 +62,7 @@ public class Main {
         training.setTrainingName("Morning Cardio");
 
 
-        training.setTrainingType(trainingType); // пример получения типа
+        training.setTrainingType(trainingType);
         training.setTrainingDate(LocalDate.now());
         training.setTrainingDuration(60);
 
