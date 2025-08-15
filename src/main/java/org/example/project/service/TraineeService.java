@@ -35,7 +35,6 @@ public interface TraineeService {
     void deleteByUsername(String username);                 // Жёсткое удаление
 
 
-
     List<Trainer> getNotAssignedTrainers(String traineeUsername); // Тренеры, не назначенные на ученика
 
     void updateTrainersList(String traineeUsername, List<Long> trainerIds); // Обновление списка тренеров
