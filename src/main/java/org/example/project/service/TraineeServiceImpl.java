@@ -85,11 +85,9 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee authenticate(String username, String password) {
-        Optional<Trainee> trainee = traineeRepository.findByUsername(username);
-        if (trainee.isEmpty() || !trainee.get().getPassword().equals(password)) {
-            throw new SecurityException("Invalid username or password");
-        }
-        return trainee.orElse(null);
+        return traineeRepository.findByUsername(username)
+                .filter(trainee -> trainee.getPassword().equals(password))
+                .orElseThrow(() -> new SecurityException("Invalid username or password"));
     }
 
     @Override
@@ -142,7 +140,7 @@ public class TraineeServiceImpl implements TraineeService {
         List<Trainer> selectedTrainers = trainerIds.stream()
                 .map(trainerRepository::findById)
                 .filter(Optional::isPresent)
-                .map(Optional::get)            // достаём объект Trainer из Optional
+                .map(Optional::get)
                 .toList();
         trainee.setTrainers(selectedTrainers);
         traineeRepository.update(trainee);
