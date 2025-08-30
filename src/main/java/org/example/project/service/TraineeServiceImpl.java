@@ -37,15 +37,8 @@ public class TraineeServiceImpl implements TraineeService {
         this.credentialsGenerator = credentialsGenerator;
     }
 
-    @Override
-    public Trainee createTrainee(Trainee trainee) {
-        trainee.setUsername(credentialsGenerator.generateUsername(trainee.getFirstName(), trainee.getLastName()));
-        trainee.setPassword(credentialsGenerator.generatePassword());
-        trainee.setIsActive(true);
-        Trainee saved = traineeRepository.save(trainee);
-        logger.info("Created new trainee with username: {}", saved.getUsername());
-        return saved;
-    }
+
+
 
     @Override
     public Trainee findById(Long id) {
@@ -59,7 +52,7 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    public Trainee update(Trainee trainee) {
+    public Trainee updateTraineeProfile(Trainee trainee) {
         logger.info("Updating trainee with ID: {}", trainee.getId());
         Trainee existing = traineeRepository.findById(trainee.getId())
                 .orElseThrow(() -> {
@@ -76,47 +69,23 @@ public class TraineeServiceImpl implements TraineeService {
         return traineeRepository.update(existing);
     }
 
+/*
     @Override
     public void delete(Long id) {
         Optional<Trainee> trainee = traineeRepository.findById(id);
         traineeRepository.delete(trainee.orElseThrow(() -> new EntityNotFoundException("Trainee not found by id: " + id)));
         logger.info("Deleted trainee by id: {}", id);
     }
-
-    @Override
-    public Trainee authenticate(String username, String password) {
-        return traineeRepository.findByUsername(username)
-                .filter(trainee -> trainee.getPassword().equals(password))
-                .orElseThrow(() -> new SecurityException("Invalid username or password"));
-    }
+*/
 
     @Override
     public Trainee findByUsername(String username) {
         Optional<Trainee> trainee = traineeRepository.findByUsername(username);
         if (trainee.isEmpty()) throw new EntityNotFoundException("Trainee not found by username: " + username);
-        return trainee.orElse(null);
+        return trainee.orElseThrow(() -> new EntityNotFoundException("Trainee not found by username: " + username));
     }
 
-    @Override
-    public Trainee changePassword(String username, String newPassword) {
-        Trainee trainee = findByUsername(username);
-        trainee.setPassword(newPassword);
-        return traineeRepository.update(trainee);
-    }
 
-    @Override
-    public Trainee activate(String username) {
-        Trainee trainee = findByUsername(username);
-        trainee.setIsActive(true);
-        return traineeRepository.update(trainee);
-    }
-
-    @Override
-    public Trainee deactivate(String username) {
-        Trainee trainee = findByUsername(username);
-        trainee.setIsActive(false);
-        return traineeRepository.update(trainee);
-    }
 
     @Override
     public void deleteByUsername(String username) {

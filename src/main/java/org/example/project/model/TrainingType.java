@@ -16,7 +16,9 @@ public class TrainingType {
     private String trainingTypeName;
 
 
-
+    public Long getId() {
+        return id;
+    }
 
     public TrainingType(String trainingTypeName) {
         this.trainingTypeName = trainingTypeName;

@@ -20,6 +20,8 @@ public interface TrainingService {
 
     List<Training> getTrainingsByDate(LocalDate date);
 
+    List<TrainingType> getAllTrainingTypes();
+
     List<Training> getTrainingsByType(TrainingType type);
 
     Training updateTraining(Training training);

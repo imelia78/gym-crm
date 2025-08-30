@@ -1,5 +1,6 @@
 package org.example.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -16,14 +17,15 @@ public class Training {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainee_id")
+    @JsonBackReference(value = "trainee-training")
     private Trainee trainee;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainer_id")
+    @JsonBackReference(value = "trainer-training")
     private Trainer trainer;
 
-    /*private Long traineeId;
-    private Long trainerId;*/
+
     @Column(nullable = false)
     private String trainingName;
 

@@ -28,16 +28,8 @@ public class TrainerServiceImpl implements TrainerService {
         this.credentialsGenerator = credentialsGenerator;
     }
 
-    @Override
-    public Trainer createTrainer(Trainer trainer) {
-        trainer.setUsername(credentialsGenerator.generateUsername(trainer.getFirstName(), trainer.getLastName()));
-        trainer.setPassword(credentialsGenerator.generatePassword());
-        trainer.setIsActive(true);
-        Trainer saved = trainerRepository.save(trainer);
-        logger.info("Created new trainee with username: {}", saved.getUsername());
-        return saved;
 
-    }
+
 
     @Override
     public List<Trainer> findAll() {
@@ -45,14 +37,14 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Trainer getTrainerByUsername(String username) {
+    public Trainer findTrainerByUsername(String username) {
         return trainerRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("Trainer not found"));
     }
 
 
     @Override
     public Trainer updateTrainerProfile(String username, Trainer updatedTrainer) {
-        Trainer existing = getTrainerByUsername(username);
+        Trainer existing = findTrainerByUsername(username);
         existing.setFirstName(updatedTrainer.getFirstName());
         existing.setLastName(updatedTrainer.getLastName());
         existing.setUsername(updatedTrainer.getUsername());
@@ -62,12 +54,12 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public void delete(Long id) {
-        Trainer trainer = trainerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Trainer not found"));
+    public void delete(String username) {
+        Trainer trainer = trainerRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("Trainer not found"));
         trainerRepository.delete(trainer);
     }
 
-
+/*
     @Override
     public void changePassword(String username, String newPassword) {
         Trainer trainer = getTrainerByUsername(username);
@@ -100,6 +92,6 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerRepository.findByUsername(username)
                 .map(t -> t.getPassword().equals(password))
                 .orElse(false);
-    }
+    }*/
 
 }

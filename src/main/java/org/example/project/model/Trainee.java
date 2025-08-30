@@ -1,5 +1,9 @@
 package org.example.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.project.credentials.CredentialsGenerator;
 
@@ -12,6 +16,7 @@ import java.util.List;
 public class Trainee extends User {
 
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @Column(nullable = false)
@@ -19,10 +24,13 @@ public class Trainee extends User {
 
 
     @ManyToMany(mappedBy = "trainees")
+    @JsonIgnore
     private List<Trainer> trainers = new ArrayList<>();
 
     @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL, orphanRemoval = true)
     // orphanRemoval -- удалит дочерние обьекты без родителя!
+    //@JsonManagedReference(value = "trainee-training")
+    @JsonIgnore
     private List<Training> trainings = new ArrayList<>();
 
 
