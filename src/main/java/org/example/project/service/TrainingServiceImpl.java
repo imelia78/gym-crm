@@ -5,9 +5,7 @@ import jakarta.transaction.Transactional;
 import org.example.project.credentials.CredentialsGenerator;
 import org.example.project.model.Training;
 import org.example.project.model.TrainingType;
-import org.example.project.repository.TraineeRepository;
-import org.example.project.repository.TrainerRepository;
-import org.example.project.repository.TrainingRepository;
+import org.example.project.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,21 +20,34 @@ public class TrainingServiceImpl implements TrainingService {
     private static final Logger logger = LoggerFactory.getLogger(TrainingServiceImpl.class);
 
     private final TrainingRepository trainingRepository;
+    private final TrainingTypeRepository trainingTypeRepository;
 
     //  private  final CredentialsGenerator credentialsGenerator;
 
 
-    public TrainingServiceImpl(TrainingRepository trainingRepository) {
+    public TrainingServiceImpl(TrainingRepository trainingRepository, TrainingTypeRepository trainingTypeRepository) {
         this.trainingRepository = trainingRepository;
+        this.trainingTypeRepository = trainingTypeRepository;
 
     }
 
     @Override
     public Training createTraining(Training training) {
+        if (training.getTrainingType() != null && training.getTrainingType().getId() != null) {
+            TrainingType trainingType = trainingTypeRepository.findById(training.getTrainingType().getId())
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Training type not found: " + training.getTrainingType().getId()
+                    ));
+            training.setTrainingType(trainingType);
+        } else {
+            throw new IllegalArgumentException("TrainingType must not be null and must have an id");
+        }
+
         Training saved = trainingRepository.save(training);
         logger.info("Training created: " + saved);
         return saved;
     }
+
 
     @Override
     public List<Training> getAllTrainings() {
@@ -63,10 +74,16 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<TrainingType> getAllTrainingTypes() {
+        return trainingTypeRepository.findAll();
+    }
+
+    @Override
     public List<Training> getTrainingsByType(TrainingType type) {
         logger.info("Fetching trainings by type: {}", type);
         return trainingRepository.findByType(type);
     }
+
 
     @Override
     public Training updateTraining(Training training) {

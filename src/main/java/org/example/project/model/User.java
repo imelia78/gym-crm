@@ -29,7 +29,7 @@ public abstract class User {
     @Column(nullable = false)
     private boolean isActive;
 
-// Сменить параметры конструктора!
+    // Сменить параметры конструктора!
     public User(CredentialsGenerator credentialsGenerator, String firstName, String lastName, boolean isActive) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -102,7 +102,5 @@ public abstract class User {
         return id;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
+
 }

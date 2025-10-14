@@ -1,6 +1,8 @@
 package org.example.project.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.project.credentials.CredentialsGenerator;
 
@@ -25,9 +27,12 @@ public class Trainer extends User {
             joinColumns = @JoinColumn(name = "trainer_id"),
             inverseJoinColumns = @JoinColumn(name = "trainee_id")
     )
+    @JsonIgnore
     private List<Trainee> trainees = new ArrayList<>();
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    // @JsonManagedReference("trainer-training")
     private List<Training> trainings = new ArrayList<>();
 
 
